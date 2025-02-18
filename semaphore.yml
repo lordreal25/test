@@ -1,0 +1,24 @@
+version: v1.0
+name: PostgreSQL Installation Pipeline
+
+blocks:
+  - name: Install PostgreSQL
+    task:
+      jobs:
+        - name: Install PostgreSQL on Server
+          commands:
+            - checkout
+            - run:
+                name: Update and Install PostgreSQL
+                command: |
+                  sudo apt-get update
+                  sudo apt-get install -y postgresql postgresql-contrib
+            - run:
+                name: Start PostgreSQL Service
+                command: |
+                  sudo systemctl enable postgresql
+                  sudo systemctl start postgresql
+            - run:
+                name: Verify PostgreSQL Installation
+                command: |
+                  sudo -u postgres psql -c "SELECT version();"
